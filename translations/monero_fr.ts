@@ -1559,8 +1559,8 @@ Cette transaction sera déverrouillée au bloc %llu, dans approximativement %s j
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="1622"/>
-        <source>Donate &lt;amount&gt; to the development team (donate..org).</source>
-        <translation>Donner &lt;montant&gt; à l&apos;équipe de développement (donate..org).</translation>
+        <source>Donate &lt;amount&gt; to the development team (donate.hakcoin.org).</source>
+        <translation>Donner &lt;montant&gt; à l&apos;équipe de développement (donate.hakcoin.org).</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="1625"/>

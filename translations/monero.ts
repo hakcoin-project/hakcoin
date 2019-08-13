@@ -1550,7 +1550,7 @@ This transaction will unlock on block %llu, in approximately %s days (assuming 2
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="1622"/>
-        <source>Donate &lt;amount&gt; to the development team (donate..org).</source>
+        <source>Donate &lt;amount&gt; to the development team (donate.hakcoin.org).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1559,8 +1559,8 @@ Denna transaktion låses upp vid block %llu, om ungefär %s dagar (förutsatt en
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="1622"/>
-        <source>Donate &lt;amount&gt; to the development team (donate..org).</source>
-        <translation>Donera &lt;belopp&gt; till utvecklingsteamet (donate..org).</translation>
+        <source>Donate &lt;amount&gt; to the development team (donate.hakcoin.org).</source>
+        <translation>Donera &lt;belopp&gt; till utvecklingsteamet (donate.hakcoin.org).</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="1625"/>

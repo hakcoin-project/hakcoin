@@ -10,8 +10,8 @@ Portions Copyright (c) 2012-2013 The Cryptonote developers.
 
 ## Development resources
 
-- Web: [.org](https://.org)
-- Forum: [forum..org](https://forum..org)
+- Web: [hakcoin.org](https://hakcoin.org)
+- Forum: [forum.hakcoin.org](https://forum.hakcoin.org)
 - GitHub: [https://github.com/hakcoin/hakcoin](https://github.com/hakcoin/hakcoin)
 - IRC: [#hakcoin on Freenode](http://webchat.freenode.net/?randomnick=1&channels=%23hakcoin&prompt=1&uio=d4)
 
