@@ -90,8 +90,8 @@ static const struct {
   uint8_t threshold;
   time_t time;
 } mainnet_hard_forks[] = {
-  { 1, 1, 0, 1504387246 },
-  { 7, 60, 0, 1505387246 },
+  { 1, 1, 0, 1555676419 },
+  { 7, 60, 0, 1565676419 },
 };
 
 static const struct {
