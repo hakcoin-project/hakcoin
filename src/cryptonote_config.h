@@ -52,6 +52,7 @@
 #define CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V2           60*24
 #define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V2            12
 
+#define CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V6           60*5
 
 // MONEY_SUPPLY - total number coins to be generated
 #define MONEY_SUPPLY                                    ((uint64_t)(-1))
@@ -84,6 +85,9 @@
 
 #define DIFFICULTY_WINDOW_V3                            60
 #define DIFFICULTY_BLOCKS_COUNT_V3                      DIFFICULTY_WINDOW_V3
+
+#define DIFFICULTY_WINDOW_V6                            60
+#define DIFFICULTY_BLOCKS_COUNT_V6                      DIFFICULTY_WINDOW_V6 + 1
 
 #define CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_SECONDS_V1   DIFFICULTY_TARGET * CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS
 #define CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS       1
@@ -120,7 +124,7 @@
 
 #define ALLOW_DEBUG_COMMANDS
 
-#define CRYPTONOTE_NAME                         "masari"
+#define CRYPTONOTE_NAME                         "hakcoin"
 #define CRYPTONOTE_POOLDATA_FILENAME            "poolstate.bin"
 #define CRYPTONOTE_BLOCKCHAINDATA_FILENAME      "data.mdb"
 #define CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME "lock.mdb"
@@ -141,14 +145,14 @@ namespace config
   uint64_t const DEFAULT_DUST_THRESHOLD = 0; // deprecated
   std::string const P2P_REMOTE_DEBUG_TRUSTED_PUB_KEY = "0000000000000000000000000000000000000000000000000000000000000000";
 
-  uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 28;
-  uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 29;
-  uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 52;
-  uint16_t const P2P_DEFAULT_PORT = 38080;
-  uint16_t const RPC_DEFAULT_PORT = 38081;
-  uint16_t const ZMQ_RPC_DEFAULT_PORT = 38082;
+  uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 0x39944;
+  uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 0x18ec1a;
+  uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 0x335656;
+  uint16_t const P2P_DEFAULT_PORT = 38780;
+  uint16_t const RPC_DEFAULT_PORT = 38781;
+  uint16_t const ZMQ_RPC_DEFAULT_PORT = 38782;
   boost::uuids::uuid const NETWORK_ID = { {
-      0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x12
+      0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x52
     } }; // Bender's nightmare
   std::string const GENESIS_TX =
     "01"                                                                  // version
@@ -159,10 +163,10 @@ namespace config
     "01"                                                                  // vout length
     "ffffffffffff07"                                                      // output #1 amount
     "02"                                                                  // output 1 type
-    "0bf6522f9152fa26cd1fc5c022b1a9e13dab697f3acf4b4d0ca6950a867a1943"    // output #1 key
+    "3338e0308471084cfab5a7ed5ffc019a655f878126cb03b046c7c91277167692"    // output #1 key
     "21"                                                                  // extra length in bytes
     "01"                                                                  // extra pubkey tag
-    "1d92826d0656958865a035264725799f39f6988faa97d532f972895de849496d00"; // tx pubkey
+    "a7adbf59dd81ab9f6b3417c4f9962cdbfd1e9d21d029e95b3f494410c4252b8e00"; // tx pubkey
 
   uint32_t const GENESIS_NONCE = 10000;
 
@@ -171,11 +175,11 @@ namespace config
     uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 33;
     uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 34;
     uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 73;
-    uint16_t const P2P_DEFAULT_PORT = 48080;
-    uint16_t const RPC_DEFAULT_PORT = 48081;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 48082;
+    uint16_t const P2P_DEFAULT_PORT = 48780;
+    uint16_t const RPC_DEFAULT_PORT = 48781;
+    uint16_t const ZMQ_RPC_DEFAULT_PORT = 48782;
     boost::uuids::uuid const NETWORK_ID = { {
-        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x13
+        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x53
       } }; // Bender's daydream
   }
 
@@ -184,11 +188,11 @@ namespace config
     uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 34;
     uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 35;
     uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 46;
-    uint16_t const P2P_DEFAULT_PORT = 58080;
-    uint16_t const RPC_DEFAULT_PORT = 58081;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 58082;
+    uint16_t const P2P_DEFAULT_PORT = 58780;
+    uint16_t const RPC_DEFAULT_PORT = 58781;
+    uint16_t const ZMQ_RPC_DEFAULT_PORT = 58782;
     boost::uuids::uuid const NETWORK_ID = { {
-        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x14
+        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x54
       } }; // Bender's daydream
   }
 }

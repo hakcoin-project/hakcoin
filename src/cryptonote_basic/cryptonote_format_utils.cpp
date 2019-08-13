@@ -675,15 +675,15 @@ namespace cryptonote
     switch (std::atomic_load(&default_decimal_point))
     {
       case 12:
-        return "masari";
+        return "hakcoin";
       case 9:
-        return "millisari";
+        return "millihak";
       case 6:
-        return "microsari";
+        return "microhak";
       case 3:
-        return "nanosari";
+        return "nanohak";
       case 0:
-        return "picosari";
+        return "picohak";
       default:
         ASSERT_MES_AND_THROW("Invalid decimal point specification: " << default_decimal_point);
     }
@@ -854,7 +854,17 @@ namespace cryptonote
   bool get_block_longhash(const block& b, crypto::hash& res, uint64_t height)
   {
     blobdata bd = get_block_hashing_blob(b);
-    const int cn_variant = b.major_version >= 5 ? b.major_version - 4 : 0;
+    
+    int cn_variant;
+    if(b.major_version < 5)
+    {
+      cn_variant = 0;
+	}
+	else
+	{
+      cn_variant = 1;
+    }
+    
     crypto::cn_slow_hash(bd.data(), bd.size(), res, cn_variant);
     return true;
   }
