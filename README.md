@@ -55,8 +55,6 @@ The Monero donation address is: `CHANGEME_FORK`
 
 The Bitcoin donation address is: `CHANGEME_FORK`
 
-There are a few mining pools that kindly donate a portion of their fees, [a list of them can be found on our Bitcointalk post](CHANGEME_FORK). Others can be found on [HakcoinPools](CHANGEME_FORK) and [CryptoIsMe](https://cryptoisme.com/coin/hakcoin)<-CHANGEME_FORK.
-
 ## License
 
 See [LICENSE](LICENSE).
