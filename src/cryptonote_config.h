@@ -55,22 +55,22 @@
 #define CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V6           60*5
 
 // MONEY_SUPPLY - total number coins to be generated
-#define MONEY_SUPPLY 					8600000000000000000UL // 86,000,000 * pow(10, 12)
-#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)
-#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)300000000000) // 3 * pow(10, 11)
+#define MONEY_SUPPLY 					86000000000000000UL // 86,000,000 * pow(10, 9)
+#define EMISSION_SPEED_FACTOR_PER_MINUTE                (25)
+#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)300000) // 3 * pow(10, 11)
 
 #define CRYPTONOTE_REWARD_BLOCKS_WINDOW                 100
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1    300000
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2    CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1
 #define CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE          600
-#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                11
+#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                9
 // COIN - number of smallest units in one coin
-#define COIN                                            ((uint64_t)1000000000000) // pow(10, 12)
+#define COIN                                            ((uint64_t)1000000000) // pow(10, 9)
 
 #define DEFAULT_MIXIN                                   12
 #define DEFAULT_RINGSIZE                                DEFAULT_MIXIN + 1
 #define DYNAMIC_FEE_PER_KB_BASE_FEE                     ((uint64_t)400000000) // 4 * pow(10,8)))
-#define DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD            ((uint64_t)10000000000000) // 10 * pow(10,12)
+#define DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD            ((uint64_t)10000000000) // 10 * pow(10,9)
 
 #define DIFFICULTY_TARGET                               120  // seconds
 #define DIFFICULTY_WINDOW                               720 // blocks
@@ -161,12 +161,12 @@ namespace config
     "ff"                                                                  // vin #1
     "00"                                                                  // height gen input
     "01"                                                                  // vout length
-    "ffffffffffff07"                                                      // output #1 amount
+    "da96a28c13"                                                      // output #1 amount
     "02"                                                                  // output 1 type
-    "3338e0308471084cfab5a7ed5ffc019a655f878126cb03b046c7c91277167692"    // output #1 key
+    "664ebfb9885059e97fe04bf66917b91c5a9d5a55691feca0410bb2ad4a21fb01"    // output #1 key
     "21"                                                                  // extra length in bytes
     "01"                                                                  // extra pubkey tag
-    "a7adbf59dd81ab9f6b3417c4f9962cdbfd1e9d21d029e95b3f494410c4252b8e00"; // tx pubkey
+    "22dbd3174447c56339f11aaf8e3ded3c23b8106e52d0b92146a6d63f8134219e00"; // tx pubkey
 
   uint32_t const GENESIS_NONCE = 10000;
 
