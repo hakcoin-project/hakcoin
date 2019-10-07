@@ -99,7 +99,8 @@ namespace cryptonote
 
     uint64_t block_reward = 0;
     uint64_t base_reward;
-    if(!get_block_reward(median_size, current_block_size, already_generated_coins, base_reward, hard_fork_version))
+//    if(!get_block_reward(median_size, current_block_size, already_generated_coins, base_reward, hard_fork_version)) MSR refers to block_reward as base_reward
+    if(!get_block_reward(median_size, current_block_size, already_generated_coins, block_reward, hard_fork_version, height)) //POTENTIAL-PROBLEM 
     {
       LOG_PRINT_L0("Block is too big");
       return false;
