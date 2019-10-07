@@ -379,10 +379,9 @@ namespace nodetool
     std::set<std::string> full_addrs;
     if (nettype == cryptonote::TESTNET)
     {
-      full_addrs.insert("34.234.145.76:48780");
-      full_addrs.insert("34.234.4.255:48780");
-      full_addrs.insert("50.17.174.202:48780");
-      full_addrs.insert("52.0.168.169:48780");
+      full_addrs.insert("167.71.212.135:48780");
+      full_addrs.insert("167.71.212.60:48780");
+      full_addrs.insert("167.71.199.223:48780");
     }
     else if (nettype == cryptonote::STAGENET)
     {
@@ -390,10 +389,9 @@ namespace nodetool
     }
     else
     {
-      full_addrs.insert("34.234.145.76:38780");
-      full_addrs.insert("34.234.4.255:38780");
-      full_addrs.insert("50.17.174.202:38780");
-      full_addrs.insert("52.0.168.169:38780");
+      full_addrs.insert("167.71.212.135:38780");
+      full_addrs.insert("167.71.212.60:38780");
+      full_addrs.insert("167.71.199.223:38780");
     }
     return full_addrs;
   }
