@@ -45,6 +45,13 @@ using namespace std;
 using namespace crypto;
 typedef crypto::hash chash;
 
+struct V4_Data
+{
+  const void* data;
+  size_t length;
+  uint64_t height;
+};
+
 PUSH_WARNINGS
 DISABLE_VS_WARNINGS(4297)
 extern "C" {
