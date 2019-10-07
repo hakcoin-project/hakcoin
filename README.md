@@ -53,8 +53,6 @@ The Monero donation address is: `4A57eA3so6bEE8FUcaN1KtMXD3sxjjbvcKD3MF1pUgRi5PN
 
 The Bitcoin donation address is: `1J1he4qtTuNpCxyEBozkeKfDpoeYxfE3rj`
 
-There are a few mining pools that kindly donate a portion of their fees, [a list of them can be found on our Bitcointalk post](https://bitcointalk.org/index.php?topic=2159114.740). Others can be found on [HakcoinPools](http://hakcoinpools.org/) and [CryptoIsMe](https://cryptoisme.com/coin/hakcoin).
-
 ## License
 
 See [LICENSE](LICENSE).
