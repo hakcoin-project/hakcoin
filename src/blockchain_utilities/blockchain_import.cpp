@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 //
 // All rights reserved.
@@ -476,15 +476,17 @@ int import_from_file(cryptonote::core& core, const std::string& import_file_path
 
           size_t block_size;
           difficulty_type cumulative_difficulty;
+          difficulty_type cumulative_weight;
           uint64_t coins_generated;
 
           block_size = bp.block_size;
           cumulative_difficulty = bp.cumulative_difficulty;
+          cumulative_weight = bp.cumulative_weight;
           coins_generated = bp.coins_generated;
 
           try
           {
-            core.get_blockchain_storage().get_db().add_block(b, block_size, cumulative_difficulty, coins_generated, txs);
+            core.get_blockchain_storage().get_db().add_block(b, block_size, cumulative_difficulty, cumulative_weight, coins_generated, txs);
           }
           catch (const std::exception& e)
           {
@@ -680,7 +682,7 @@ int main(int argc, char* argv[])
   m_config_folder = command_line::get_arg(vm, cryptonote::arg_data_dir);
   db_arg_str = command_line::get_arg(vm, arg_database);
 
-  mlog_configure(mlog_get_default_log_path("monero-blockchain-import.log"), true);
+  mlog_configure(mlog_get_default_log_path("hakcoin-blockchain-import.log"), true);
   if (!command_line::is_arg_defaulted(vm, arg_log_level))
     mlog_set_log(command_line::get_arg(vm, arg_log_level).c_str());
   else

@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 // 
 // All rights reserved.
@@ -326,8 +326,8 @@ HardFork::State HardFork::get_state(time_t t) const
   time_t t_last_fork = heights.back().time;
   if (t >= t_last_fork + forked_time)
     return LikelyForked;
-//  if (t >= t_last_fork + update_time)		##HARD FORK NOTIFIER
-//    return UpdateNeeded;			##HARD FORK NOTIFIER
+  if (t >= t_last_fork + update_time)
+    return UpdateNeeded;
   return Ready;
 }
 

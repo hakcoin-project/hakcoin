@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 // 
 // All rights reserved.
@@ -359,6 +359,7 @@ struct Wallet
     virtual void setSeedLanguage(const std::string &arg) = 0;
     //! returns wallet status (Status_Ok | Status_Error)
     virtual int status() const = 0;
+    virtual bool isMultisig() const = 0;
     //! in case error status, returns error string
     virtual std::string errorString() const = 0;
     virtual bool setPassword(const std::string &password) = 0;

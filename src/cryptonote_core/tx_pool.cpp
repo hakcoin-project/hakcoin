@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 //
 // All rights reserved.
@@ -1035,7 +1035,7 @@ namespace cryptonote
   }
   //---------------------------------------------------------------------------------
   //TODO: investigate whether boolean return is appropriate
-  bool tx_memory_pool::fill_block_template(block &bl, size_t median_size, uint64_t already_generated_coins, size_t &total_size, uint64_t &fee, uint64_t &expected_reward, uint8_t version, uint64_t height)
+  bool tx_memory_pool::fill_block_template(block &bl, size_t median_size, uint64_t already_generated_coins, size_t &total_size, uint64_t &fee, uint64_t &expected_reward, uint8_t version)
   {
     // Warning: This function takes already_generated_
     // coins as an argument and appears to do nothing
@@ -1047,9 +1047,9 @@ namespace cryptonote
     uint64_t best_coinbase = 0, coinbase = 0;
     total_size = 0;
     fee = 0;
-    
+
     //baseline empty block
-    get_block_reward(median_size, total_size, already_generated_coins, best_coinbase, version, height);
+    get_block_reward(median_size, total_size, already_generated_coins, best_coinbase, version);
 
 
     size_t max_total_size = 2 * median_size - CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE;
@@ -1084,7 +1084,7 @@ namespace cryptonote
         // If we're getting lower coinbase tx,
         // stop including more tx
         uint64_t block_reward;
-        if(!get_block_reward(median_size, total_size + meta.blob_size, already_generated_coins, block_reward, version, height))
+        if(!get_block_reward(median_size, total_size + meta.blob_size, already_generated_coins, block_reward, version))
         {
           LOG_PRINT_L2("  would exceed maximum block size");
           sorted_it++;

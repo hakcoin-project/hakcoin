@@ -1,8 +1,6 @@
 # Hakcoin
 
-Copyright (c) 2018 Hakcoin
-
-Copyright (c) 2017-2018 The Masari Project.
+Copyright (c) 2017-2019 The Hakcoin Project.
 
 Copyright (c) 2014-2018 The Monero Project.
 
@@ -12,7 +10,7 @@ Portions Copyright (c) 2012-2013 The Cryptonote developers.
 
 - Web: [hakcoin.org](https://hakcoin.org)
 - Forum: [forum.hakcoin.org](https://forum.hakcoin.org)
-- GitHub: [https://github.com/hakcoin/hakcoin](https://github.com/hakcoin/hakcoin)
+- GitHub: [https://github.com/hakcoin-project/hakcoin](https://github.com/hakcoin-project/hakcoin)
 - IRC: [#hakcoin on Freenode](http://webchat.freenode.net/?randomnick=1&channels=%23hakcoin&prompt=1&uio=d4)
 
 ## Vulnerability response
@@ -35,7 +33,7 @@ Hakcoin is a private, secure, untraceable, decentralised digital currency. You a
 
 **Untraceability:** By taking advantage of ring signatures, a special property of a certain type of cryptography, Hakcoin is able to ensure that transactions are not only untraceable, but have an optional measure of ambiguity that ensures that transactions cannot easily be tied back to an individual user or computer.
 
-**Scalability:** By taking advantage of ring signatures, a special property of a certain type of cryptography, Hakcoin is able to ensure that transactions are not only untraceable, but have an optional measure of ambiguity that ensures that transactions cannot easily be tied back to an individual user or computer.
+**Scalability:** Hakcoin aims to scale as a cryptocurrency to acheive high transaction speed and capacity while maintaining all of its privacy features as it explores unique solutions such as blocktree. 
 
 ## About this project
 
@@ -49,11 +47,13 @@ As with many development projects, the repository on Github is considered to be 
 
 Hakcoin is a 100% community-sponsored endeavor. If you want to join our efforts, the easiest thing you can do is support the project financially.
 
-The Hakcoin donation address is: `CHANGEME_FORK` (viewkey: `CHANGEME_FORK`)
+The Hakcoin donation address is: `5nYWvcvNThsLaMmrsfpRLBRou1RuGtLabUwYH7v6b88bem2J4aUwsoF33FbJuqMDgQjpDRTSpLCZu3dXpqXicE2uSWS4LUP` (viewkey: `99e21e00cce073c126e9aed800c9e2e82518534b3924b035a29436ff4f75bc0c`)
 
-The Monero donation address is: `CHANGEME_FORK`
+The Monero donation address is: `4A57eA3so6bEE8FUcaN1KtMXD3sxjjbvcKD3MF1pUgRi5PNHTpB7sYN2DmJv3EXxtZCWeG88tsVLzdfZJcmUFm52SbrfJWr` (viewkey: `c7a7c141581ac4436ba8bfb81dd67234720c565c696ef154a25c7e7314ce4b08`)
 
-The Bitcoin donation address is: `CHANGEME_FORK`
+The Bitcoin donation address is: `1J1he4qtTuNpCxyEBozkeKfDpoeYxfE3rj`
+
+There are a few mining pools that kindly donate a portion of their fees, [a list of them can be found on our Bitcointalk post](https://bitcointalk.org/index.php?topic=2159114.740). Others can be found on [HakcoinPools](http://hakcoinpools.org/) and [CryptoIsMe](https://cryptoisme.com/coin/hakcoin).
 
 ## License
 
@@ -74,6 +74,9 @@ Dates are provided in the format YYYY-MM-DD.
 | 2017-11-29        | v3                | 0.1.3.0                | 0.1.3.1                    | Difficulty adjustment algorithm updated to WWHM                     |
 | 2017-12-06        | v4                | 0.1.4.0                | 0.1.4.0                    | Difficulty adjustment tweaks                                        |
 | 2018-05-01        | v5                | 0.2.0.0                | 0.2.0.2                    | Upstream track of v0.12.0 with Multisig, Subaddresses, CN variant 1 |
+| 2018-05-05        | v6                | 0.2.3.0                | 0.2.3.0                    | LWMA + stricter FTL settings                                        |
+| 2018-06-18        | v7                | 0.2.4.0                | 0.2.4.5                    | CryptoNight-Fast PoW                                                |
+| 2019-01-26        | v8                | 0.3.0.0                | 0.3.0.0                    | SECOR (uncle mining) protocol, multi-output Bulletproofs, CNFastv2  |
 
 X's indicate that these details have not been determined as of commit date.
 

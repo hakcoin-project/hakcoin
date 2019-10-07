@@ -55,6 +55,12 @@
 #undef MONERO_DEFAULT_LOG_CATEGORY
 #define MONERO_DEFAULT_LOG_CATEGORY "net"
 
+#if BOOST_VERSION >= 107000
+#define GET_IO_SERVICE(s) ((boost::asio::io_context&)(s).get_executor().context())
+#else
+#define GET_IO_SERVICE(s) ((s).get_io_service())
+#endif
+
 PRAGMA_WARNING_PUSH
 namespace epee
 {
@@ -201,7 +207,7 @@ PRAGMA_WARNING_DISABLE_VS(4355)
   template<class t_protocol_handler>
   boost::asio::io_service& connection<t_protocol_handler>::get_io_service()
   {
-    return socket_.get_io_service();
+    return GET_IO_SERVICE(socket());
   }
   //---------------------------------------------------------------------------------
   template<class t_protocol_handler>
@@ -359,7 +365,7 @@ PRAGMA_WARNING_DISABLE_VS(4355)
     if(!m_is_multithreaded)
     {
       //single thread model, we can wait in blocked call
-      size_t cnt = socket_.get_io_service().run_one();
+      size_t cnt = GET_IO_SERVICE(socket()).run_one();
       if(!cnt)//service is going to quit
         return false;
     }else
@@ -369,7 +375,7 @@ PRAGMA_WARNING_DISABLE_VS(4355)
       //if no handlers were called
       //TODO: Maybe we need to have have critical section + event + callback to upper protocol to
       //ask it inside(!) critical region if we still able to go in event wait...
-      size_t cnt = socket_.get_io_service().poll_one();     
+      size_t cnt = GET_IO_SERVICE(socket()).poll_one();     
       if(!cnt)
         misc_utils::sleep_no_w(0);
     }
@@ -923,7 +929,8 @@ POP_WARNINGS
   void boosted_tcp_server<t_protocol_handler>::handle_accept(const boost::system::error_code& e)
   {
     MDEBUG("handle_accept");
-    TRY_ENTRY();
+    try
+    {
     if (!e)
     {
 		if (m_connection_type == e_connection_type_RPC) {
@@ -941,11 +948,24 @@ POP_WARNINGS
 
       conn->start(true, 1 < m_threads_count);
       conn->save_dbg_log();
-    }else
-    {
-      _erro("Some problems at accept: " << e.message() << ", connections_count = " << m_sock_count);
+      return;
     }
-    CATCH_ENTRY_L0("boosted_tcp_server<t_protocol_handler>::handle_accept", void());
+    else
+    {
+      MERROR("Error in boosted_tcp_server<t_protocol_handler>::handle_accept: " << e);
+    }
+    }
+    catch (const std::exception &e)
+    {
+      MERROR("Exception in boosted_tcp_server<t_protocol_handler>::handle_accept: " << e.what());
+    }
+    // error path, if e or exception
+    _erro("Some problems at accept: " << e.message() << ", connections_count = " << m_sock_count);
+    misc_utils::sleep_no_w(100);
+    new_connection_.reset(new connection<t_protocol_handler>(io_service_, m_config, m_sock_count, m_sock_number, m_pfilter, m_connection_type));
+    acceptor_.async_accept(new_connection_->socket(),
+      boost::bind(&boosted_tcp_server<t_protocol_handler>::handle_accept, this,
+      boost::asio::placeholders::error));
   }
   //---------------------------------------------------------------------------------
   template<class t_protocol_handler>

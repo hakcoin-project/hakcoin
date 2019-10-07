@@ -1,3 +1,4 @@
+// Copyright (c) 2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 //
 // All rights reserved.
@@ -251,7 +252,7 @@ namespace cryptonote
         LOG_ERROR("Target account address " << command_line::get_arg(vm, arg_start_mining) << " has wrong format, starting daemon canceled");
         return false;
       }
-      m_mine_address = info.address;
+      m_mine_address = command_line::get_arg(vm, arg_start_mining);
       m_threads_total = 1;
       m_do_mining = true;
       if(command_line::has_arg(vm, arg_mining_threads))
@@ -281,7 +282,7 @@ namespace cryptonote
     return !m_stop;
   }
   //-----------------------------------------------------------------------------------------------------
-  const account_public_address& miner::get_mining_address() const
+  std::string miner::get_mining_address() const
   {
     return m_mine_address;
   }
@@ -290,7 +291,7 @@ namespace cryptonote
     return m_threads_total;
   }
   //-----------------------------------------------------------------------------------------------------
-  bool miner::start(const account_public_address& adr, size_t threads_count, const boost::thread::attributes& attrs, bool do_background, bool ignore_battery)
+  bool miner::start(std::string adr, size_t threads_count, const boost::thread::attributes& attrs, bool do_background, bool ignore_battery)
   {
     m_mine_address = adr;
     m_threads_total = static_cast<uint32_t>(threads_count);
@@ -485,7 +486,10 @@ namespace cryptonote
       {
         //we lucky!
         ++m_config.current_extra_message_index;
-        MGINFO_GREEN("Found block for difficulty: " << local_diff);
+        MGINFO_GREEN("Found block for difficulty: " << local_diff << " at height: " << height);
+        if (is_uncle_block_included(b)) {
+          MGINFO_GREEN("Uncle mined: " << b.uncle);
+        }
         if(!m_phandler->handle_block_found(b))
         {
           --m_config.current_extra_message_index;
@@ -630,7 +634,7 @@ namespace cryptonote
         boost::tribool battery_powered(on_battery_power());
         if(!indeterminate( battery_powered ))
         {
-          on_ac_power = !battery_powered;
+          on_ac_power = !(bool)battery_powered;
         }
       }
 

@@ -84,7 +84,7 @@ TEST(AddressFromTXT, Failure)
 
 TEST(AddressFromURL, Success)
 {
-  const std::string addr = HAK_DONATION_ADDR;
+  const std::string addr = HAKCOIN_DONATION_ADDR;
   
   bool dnssec_result = false;
 
@@ -97,7 +97,7 @@ TEST(AddressFromURL, Success)
   }
 
   // OpenAlias address with an @ instead of first .
-  addresses = tools::dns_utils::addresses_from_url("donate@.org", dnssec_result);
+  addresses = tools::dns_utils::addresses_from_url("donate@hakcoin.org", dnssec_result);
   EXPECT_EQ(1, addresses.size());
   if (addresses.size() == 1)
   {

@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 // 
 // All rights reserved.
@@ -708,5 +708,24 @@ std::string get_nix_version_display_string()
     if (!SHA256_Final((unsigned char*)hash.data, &ctx))
       return false;
     return true;
+  }
+
+  std::string glob_to_regex(const std::string &val)
+  {
+    std::string newval;
+
+    bool escape = false;
+    for (char c: val)
+    {
+      if (c == '*')
+        newval += escape ? "*" : ".*";
+      else if (c == '?')
+        newval += escape ? "?" : ".";
+      else if (c == '\\')
+        newval += '\\', escape = !escape;
+      else
+        newval += c;
+    }
+    return newval;
   }
 }

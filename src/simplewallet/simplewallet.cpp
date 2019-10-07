@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018, The Masari Project
+// Copyright (c) 2017-2018, The Hakcoin Project
 // Copyright (c) 2014-2018, The Monero Project
 // 
 // All rights reserved.
@@ -792,7 +792,7 @@ bool simple_wallet::print_fee_info(const std::vector<std::string> &args/* = std:
       std::string msg;
       if (priority == m_wallet->get_default_priority() || (m_wallet->get_default_priority() == 0 && priority == 1))
         msg = tr(" (current)");
-      uint64_t minutes_low = nblocks_low * DIFFICULTY_TARGET / 60, minutes_high = nblocks_high * DIFFICULTY_TARGET / 60;
+      uint64_t minutes_low = nblocks_low * DIFFICULTY_TARGET / 60, minutes_high = nblocks_high * DIFFICULTY_TARGET_V8 / 60;
       if (nblocks_high == nblocks_low)
         message_writer() << (boost::format(tr("%u block (%u minutes) backlog at priority %u%s")) % nblocks_low % minutes_low % priority % msg).str();
       else
@@ -2001,11 +2001,11 @@ simple_wallet::simple_wallet()
                            tr("Show the blockchain height."));
   m_cmd_binder.set_handler("transfer", boost::bind(&simple_wallet::transfer, this, _1),
                            tr("transfer [index=<N1>[,<N2>,...]] [<priority>] <address> <amount> [<payment_id>]"),
-                           tr("Transfer <amount> to <address>. If the parameter \"index=<N1>[,<N2>,...]\" is specified, the wallet uses outputs received by addresses of those indices. If omitted, the wallet randomly chooses address indices to be used. In any case, it tries its best not to combine outputs across multiple addresses. <priority> is the priority of the transaction. The higher the priority, the higher the transaction fee. Valid values in priority order (from lowest to highest) are: unimportant, normal, elevated, priority. If omitted, the default value (see the command \"set priority\") is used. Multiple payments can be made at once by adding <address_2> <amount_2> etcetera (before the payment ID, if it's included)"));
+                           tr("Transfer <amount> to <address>. If the parameter \"index=<N1>[,<N2>,...]\" is specified, the wallet uses outputs received by addresses of those indices. If omitted, the wallet randomly chooses address indices to be used. In any case, it tries its best not to combine outputs across multiple addresses. <priority> is the priority of the transaction. The higher the priority, the higher the transaction fee. Valid values in priority order (from lowest to highest) are: low, medium, high. If omitted, the default value (see the command \"set priority\") is used. Multiple payments can be made at once by adding <address_2> <amount_2> etcetera (before the payment ID, if it's included)"));
   m_cmd_binder.set_handler("locked_transfer",
                            boost::bind(&simple_wallet::locked_transfer, this, _1),
                            tr("locked_transfer [index=<N1>[,<N2>,...]] [<priority>] <addr> <amount> <lockblocks> [<payment_id>]"),
-                           tr("Transfer <amount> to <address> and lock it for <lockblocks> (max. 1000000). If the parameter \"index=<N1>[,<N2>,...]\" is specified, the wallet uses outputs received by addresses of those indices. If omitted, the wallet randomly chooses address indices to be used. In any case, it tries its best not to combine outputs across multiple addresses. <priority> is the priority of the transaction. The higher the priority, the higher the transaction fee. Valid values in priority order (from lowest to highest) are: unimportant, normal, elevated, priority. If omitted, the default value (see the command \"set priority\") is used. Multiple payments can be made at once by adding <address_2> <amount_2> etcetera (before the payment ID, if it's included)"));
+                           tr("Transfer <amount> to <address> and lock it for <lockblocks> (max. 1000000). If the parameter \"index=<N1>[,<N2>,...]\" is specified, the wallet uses outputs received by addresses of those indices. If omitted, the wallet randomly chooses address indices to be used. In any case, it tries its best not to combine outputs across multiple addresses. <priority> is the priority of the transaction. The higher the priority, the higher the transaction fee. Valid values in priority order (from lowest to highest) are: low, medium, high. If omitted, the default value (see the command \"set priority\") is used. Multiple payments can be made at once by adding <address_2> <amount_2> etcetera (before the payment ID, if it's included)"));
   m_cmd_binder.set_handler("sweep_all", boost::bind(&simple_wallet::sweep_all, this, _1),
                            tr("sweep_all [index=<N1>[,<N2>,...]] [<priority>] <address> [<payment_id>]"),
                            tr("Send all unlocked balance to an address. If the parameter \"index<N1>[,<N2>,...]\" is specified, the wallet sweeps outputs received by those address indices. If omitted, the wallet randomly chooses an address index to be used."));
@@ -2387,8 +2387,28 @@ bool simple_wallet::set_log(const std::vector<std::string> &args)
     return true;
   }
   if (!args.empty())
-    mlog_set_log(args[0].c_str());
-  success_msg_writer() << "New log categories: " << mlog_get_categories();
+  {
+    try
+    {
+      uint64_t log_level_numeric = boost::lexical_cast<uint64_t>(args[0]);
+      if(log_level_numeric > 4)
+      {
+        fail_msg_writer() << tr("log level must be between 0 and 4");
+        return true;
+      }
+      
+      mlog_set_log_level(log_level_numeric);
+      success_msg_writer() << boost::format(tr("Set log level: %u")) % log_level_numeric;
+    }
+    
+    catch(boost::bad_lexical_cast &)
+    {
+      // If the cast doesn't succeed then log categories are being used instead of the default levels
+      mlog_set_log(args[0].c_str());
+    }
+  }
+  
+  success_msg_writer() << "Log categories in use: " << mlog_get_categories();
   return true;
 }
 //----------------------------------------------------------------------------------------------------
@@ -2402,12 +2422,12 @@ bool simple_wallet::ask_wallet_create_if_needed()
   bool wallet_file_exists;
 
   do{
-      LOG_PRINT_L3("User asked to specify wallet file name.");
+      LOG_PRINT_L3("User asked to specify wallet name.");
       wallet_path = input_line(
-        tr(m_restoring ? "Specify a new wallet file name for your restored wallet (e.g., MyWallet).\n"
-        "Wallet file name (or Ctrl-C to quit): " :
-        "Specify wallet file name (e.g., MyWallet). If the wallet doesn't exist, it will be created.\n"
-        "Wallet file name (or Ctrl-C to quit): ")
+        tr(m_restoring ? "Specify a new wallet name for your restored wallet (e.g., MyWallet).\n"
+        "Wallet name (or Ctrl-C to quit): " :
+        "Specify wallet name (e.g., MyWallet). If the wallet doesn't exist, it will be created.\n"
+        "Wallet name (or Ctrl-C to quit): ")
       );
       if(std::cin.eof())
       {
@@ -3856,14 +3876,41 @@ bool simple_wallet::refresh(const std::vector<std::string>& args)
 //----------------------------------------------------------------------------------------------------
 bool simple_wallet::show_balance_unlocked(bool detailed)
 {
+  if(detailed)
+    print_accounts();
+ 
   std::string extra;
   if (m_wallet->has_multisig_partial_key_images())
     extra = tr(" (Some owned outputs have partial key images - import_multisig_info needed)");
   success_msg_writer() << tr("Currently selected account: [") << m_current_subaddress_account << tr("] ") << m_wallet->get_subaddress_label({m_current_subaddress_account, 0});
-  const std::string tag = m_wallet->get_account_tags().second[m_current_subaddress_account];
-  success_msg_writer() << tr("Tag: ") << (tag.empty() ? std::string{tr("(No tag assigned)")} : tag);
-  success_msg_writer() << tr("Balance: ") << print_money(m_wallet->balance(m_current_subaddress_account)) << ", "
-    << tr("unlocked balance: ") << print_money(m_wallet->unlocked_balance(m_current_subaddress_account)) << extra;
+  const std::pair<std::map<std::string, std::string>, std::vector<std::string>>& account_tags = m_wallet->get_account_tags();
+  const std::string tag = account_tags.second[m_current_subaddress_account];
+  if(!detailed)
+  { 
+    success_msg_writer() << tr("Tag: ") << (tag.empty() ? std::string{tr("(No tag assigned)")} : tag);
+  
+    uint64_t total_balance = 0, total_unlocked_balance = 0;
+    for (uint32_t account_index = 0; account_index < m_wallet->get_num_subaddress_accounts(); ++account_index)
+    {
+      if (account_tags.second[account_index] != tag)
+        continue;
+      total_balance += m_wallet->balance(account_index);
+      total_unlocked_balance += m_wallet->unlocked_balance(account_index);
+    }
+  
+    if(total_balance != m_wallet->balance(m_current_subaddress_account))
+    {
+      success_msg_writer() << tr("Account #") << m_current_subaddress_account << tr(" balance: ") << print_money(m_wallet->balance(m_current_subaddress_account)) << ", "
+      << tr("Account #") << m_current_subaddress_account << tr(" unlocked balance: ") << print_money(m_wallet->unlocked_balance(m_current_subaddress_account)) << std::endl
+      << tr("Total balance: ") << print_money(total_balance) << ", " << tr("Total unlocked balance: ") << print_money(total_unlocked_balance) << extra;
+    }
+    else
+    {
+      success_msg_writer() << tr("Balance: ") << print_money(m_wallet->balance(m_current_subaddress_account)) << ", "
+      << tr("unlocked balance: ") << print_money(m_wallet->unlocked_balance(m_current_subaddress_account)) << extra;
+    }
+  }
+  
   std::map<uint32_t, uint64_t> balance_per_subaddress = m_wallet->balance_per_subaddress(m_current_subaddress_account);
   std::map<uint32_t, uint64_t> unlocked_balance_per_subaddress = m_wallet->unlocked_balance_per_subaddress(m_current_subaddress_account);
   if (!detailed || balance_per_subaddress.empty())
@@ -4488,8 +4535,10 @@ bool simple_wallet::transfer_main(int transfer_type, const std::vector<std::stri
         }
 
         std::stringstream prompt;
+        uint64_t tx_size = 0;
         for (size_t n = 0; n < ptx_vector.size(); ++n)
         {
+          tx_size += cryptonote::tx_to_blob(ptx_vector[n].tx).size();
           prompt << tr("\nTransaction ") << (n + 1) << "/" << ptx_vector.size() << ":\n";
           subaddr_indices.clear();
           for (uint32_t i : ptx_vector[n].construction_data.subaddr_indices)
@@ -4503,13 +4552,13 @@ bool simple_wallet::transfer_main(int transfer_type, const std::vector<std::stri
         if (ptx_vector.size() > 1)
         {
           prompt << boost::format(tr("Your transaction needs to be split into %llu transactions.  "
-            "This will result in a transaction fee being applied to each transaction, for a total fee of %s")) %
-            ((unsigned long long)ptx_vector.size()) % print_money(total_fee);
+            "This will result in a transaction fee being applied to each transaction, for a total fee of %s (total transaction size %d bytes)")) %
+            ((unsigned long long)ptx_vector.size()) % print_money(total_fee) % tx_size;
         }
         else
         {
-          prompt << boost::format(tr("The transaction fee is %s")) %
-            print_money(total_fee);
+          prompt << boost::format(tr("The transaction fee is %s (transaction size %d bytes)")) %
+            print_money(total_fee) % tx_size;
         }
         if (transfer_type == TransferLocked)
         {
@@ -5037,11 +5086,11 @@ bool simple_wallet::donate(const std::vector<std::string> &args_)
   amount_str = local_args.back();
   local_args.pop_back();
   // push back address, amount, payment id
-  local_args.push_back(HAK_DONATION_ADDR);
+  local_args.push_back(HAKCOIN_DONATION_ADDR);
   local_args.push_back(amount_str);
   if (!payment_id_str.empty())
     local_args.push_back(payment_id_str);
-  message_writer() << (boost::format(tr("Donating %s HAKCOIN to The Masari Project (donate.hakcoin.org / %s ).")) % amount_str % HAK_DONATION_ADDR).str(); 
+  message_writer() << (boost::format(tr("Donating %s %s to The Hakcoin Project (donate.hakcoin.org / %s ).")) % amount_str % cryptonote::get_unit(cryptonote::get_default_decimal_point()) % HAKCOIN_DONATION_ADDR).str(); 
   transfer(local_args);
   return true;
 }
@@ -6038,7 +6087,7 @@ bool simple_wallet::unspent_outputs(const std::vector<std::string> &args_)
     {
       std::ostringstream oss;
       for (size_t j = 0; j < 8 && i < tds.size(); ++i, ++j)
-        oss << tds[i].m_block_height << tr(" ");
+        oss << tr("Height: ") << tds[i].m_block_height << tr(", k_image: ") << tds[i].m_key_image;
       success_msg_writer() << oss.str();
     }
   }
@@ -6736,7 +6785,9 @@ bool simple_wallet::wallet_info(const std::vector<std::string> &args)
   {
     description = "<Not set>"; 
   }
-  message_writer() << tr("Filename: ") << m_wallet->get_wallet_file();
+  std::string wallet_file_name = m_wallet->get_wallet_file();
+  message_writer() << tr("Wallet name: ") << string_tools::cut_off_extension(wallet_file_name);
+  message_writer() << tr("File name: ") << wallet_file_name;
   message_writer() << tr("Description: ") << description;
   message_writer() << tr("Address: ") << m_wallet->get_account().get_public_address_str(m_wallet->nettype());
   std::string type;
@@ -6750,6 +6801,20 @@ bool simple_wallet::wallet_info(const std::vector<std::string> &args)
   message_writer() << tr("Network type: ") << (
     m_wallet->nettype() == cryptonote::TESTNET ? tr("Testnet") :
     m_wallet->nettype() == cryptonote::STAGENET ? tr("Stagenet") : tr("Mainnet"));
+  
+  tools::wallet2::transfer_container transfers;
+  m_wallet->get_transfers(transfers);
+  uint64_t min_height = std::numeric_limits<uint64_t>::max();
+  for (const auto& td : transfers)
+  {
+    if (min_height > td.m_block_height && !td.m_spent)
+      min_height = td.m_block_height;
+  }
+  if(min_height == std::numeric_limits<uint64_t>::max())
+    message_writer() << "Earliest unspent output: N/A";
+  else
+    message_writer() << "Earliest unspent output: " << min_height;
+  
   return true;
 }
 //----------------------------------------------------------------------------------------------------
